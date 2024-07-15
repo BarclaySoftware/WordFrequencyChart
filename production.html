@@ -4,38 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barclay Word Frequency Viewer</title>
+    <link rel="shortcut icon" href="icon.png" type="image/x-icon">
 </head>
 <style>
     @font-face {
         font-family: 'interface';
-        src: url(https://delivercdn.pages.dev/evermore/MacsenGroteskLatin.ttf);
+        src: url(https://delivercdn.pages.dev/evermore/NormalSans/NormalSans.ttf);
     }
+
     @font-face {
         font-family: 'interface-bold';
-        src: url(https://delivercdn.pages.dev/evermore/MacsenGroteskLatin-Bold.ttf);
+        src: url(https://delivercdn.pages.dev/evermore/NormalSans/NormalSans-Bold.ttf);
     }
+
     @font-face {
         font-family: 'interface-mono';
         src: url(https://delivercdn.pages.dev/evermore/VanguardGothic/VanguardGothic.ttf);
     }
+
     body {
         font-family: 'interface', sans-serif;
-        background-color: #f0f0f0;
+        background-color: #ffffff;
         margin: 0;
         padding: 20px;
     }
+
     h1 {
         font-family: 'interface-bold', sans-serif;
+        color: #666666;
         text-align: center;
     }
+
     .container {
-        background-color: #fff;
+        background-color: #ffffff;
         margin: 0 auto;
         padding: 20px;
         max-width: 800px;
         border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        /* box-shadow: 0 0 10px rgba(0,0,0,0.1); */
     }
+
     input, textarea {
         font-family: 'interface', sans-serif;
         font-size: 16px;
@@ -48,34 +56,79 @@
         border-radius: 10px;
         outline: none;
     }
+
     input::placeholder, textarea::placeholder {
         color: #b7b7b7;
     }
+
     input:hover, textarea:hover {
         border: 1px solid #b9b9b9;
     }
+
     input:focus, textarea:focus {
-        border: 1px solid #b9b9b9;
+        border: 1px solid #1976d2;
     }
+
     button {
         font-family: 'interface-bold', sans-serif;
         font-size: 16px;
         color: white;
         padding: 10px 20px;
-        background-color: #007BFF;
+        background-color: #1976d2;
         border: none;
         border-radius: 4px;
         cursor: pointer;
     }
+
     button:hover {
-        background-color: #0056b3;
+        background-color: #004b9b;
     }
+
     .results {
         margin-top: 20px;
     }
+
     .ngram {
         padding: 5px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #9e9e9e;
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 200px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 5px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%; 
+        left: 50%;
+        margin-left: -100px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltip .tooltiptext::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
     }
 </style>
 <body>
@@ -83,11 +136,15 @@
         <h1>Word Frequency Viewer</h1>
         <textarea id="textInput" rows="6" placeholder="Enter your text here..."></textarea>
         <button onclick="generateWordFrequency()">Generate Word Frequency</button>
+        <div class="tooltip" style="display:none;" id="downloadTooltip">
+            <button id="downloadButton" onclick="downloadChart()">Download Chart</button>
+            <span class="tooltiptext">Downloading a chart may take some time.</span>
+        </div>
         <canvas id="wordFrequencyChart"></canvas>
         <div class="results" id="results"></div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="graff.js"></script>
     <script>
         let chart;
 
@@ -98,7 +155,7 @@
             resultsDiv.innerHTML = '';
 
             if (!text) {
-                alert('Please enter valid text.');
+                alert('No valid text was found.');
                 return;
             }
 
@@ -127,9 +184,11 @@
                     datasets: [{
                         label: 'Word Frequency',
                         data: data,
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
+                        backgroundColor: '#1976d2',
+                        borderColor: '#9e9e9e',
+                        borderWidth: 1,
+                        hoverBackgroundColor: '#004b9b',
+                        hoverBorderColor: '#9e9e9e',
                     }]
                 },
                 options: {
@@ -139,7 +198,11 @@
                                 font: {
                                     family: 'interface',
                                     size: 14
-                                }
+                                },
+                                color: '#616161'
+                            },
+                            grid: {
+                                color: '#ffffff'
                             }
                         },
                         y: {
@@ -148,7 +211,11 @@
                                 font: {
                                     family: 'interface',
                                     size: 14
-                                }
+                                },
+                                color: '#616161'
+                            },
+                            grid: {
+                                color: '#f4f4f4'
                             }
                         }
                     },
@@ -158,12 +225,29 @@
                                 font: {
                                     family: 'interface',
                                     size: 14
-                                }
+                                },
+                                color: '#1976d2'
                             }
                         },
                         tooltip: {
+                            backgroundColor: '#ffffff',
+                            titleColor: '#4d4d4d',
+                            bodyColor: '#4d4d4d',
+                            borderColor: '#d9d9d9',
+                            borderWidth: 1,
+                            boxPadding: 2,
+                            callbacks: {
+                                labelColor: function(context) {
+                                    return {
+                                        borderColor: '#d9d9d9',
+                                        backgroundColor: context.dataset.backgroundColor,
+                                        borderWidth: 1,
+                                        borderDashOffset: 0
+                                    };
+                                }
+                            },
                             titleFont: {
-                                family: 'interface',
+                                family: 'interface-bold',
                                 size: 14,
                                 weight: 'normal'
                             },
@@ -183,7 +267,18 @@
                     }
                 }
             });
+
+            // Show the download button with tooltip
+            document.getElementById('downloadTooltip').style.display = 'inline-block';
         }
+
+        function downloadChart() {
+            const link = document.createElement('a');
+            link.href = document.getElementById('wordFrequencyChart').toDataURL('image/png');
+            link.download = 'word_frequency_chart.png';
+            link.click();
+        }
+
     </script>
 </body>
 </html>

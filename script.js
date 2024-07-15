@@ -31,7 +31,6 @@ function generateWordFrequency() {
 
     chart = new Chart(ctx, {
         type: 'bar',
-        // type: 'line',
         data: {
             labels: labels,
             datasets: [{
@@ -58,7 +57,6 @@ function generateWordFrequency() {
                         color: '#ffffff'
                     }
                 },
-                
                 y: {
                     beginAtZero: true,
                     ticks: {
@@ -90,10 +88,6 @@ function generateWordFrequency() {
                     borderColor: '#d9d9d9',
                     borderWidth: 1,
                     boxPadding: 2,
-                    // shadowOffsetX: 3,
-                    // shadowOffsetY: 3,
-                    // shadowBlur: 10,
-                    // shadowColor: 'rgba(0, 0, 0, 0.5)',
                     callbacks: {
                         labelColor: function(context) {
                             return {
@@ -125,4 +119,14 @@ function generateWordFrequency() {
             }
         }
     });
+
+    // Show the download button with tooltip
+    document.getElementById('downloadTooltip').style.display = 'inline-block';
+}
+
+function downloadChart() {
+    const link = document.createElement('a');
+    link.href = document.getElementById('wordFrequencyChart').toDataURL('image/png');
+    link.download = 'word_frequency_chart.png';
+    link.click();
 }

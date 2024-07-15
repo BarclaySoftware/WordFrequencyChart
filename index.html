@@ -12,6 +12,10 @@
         <h1>Word Frequency Viewer</h1>
         <textarea id="textInput" rows="6" placeholder="Enter your text here..."></textarea>
         <button onclick="generateWordFrequency()">Generate Word Frequency</button>
+        <div class="tooltip" style="display:none;" id="downloadTooltip">
+            <button id="downloadButton" onclick="downloadChart()">Download Chart</button>
+            <span class="tooltiptext">Downloading a chart may take some time.</span>
+        </div>
         <canvas id="wordFrequencyChart"></canvas>
         <div class="results" id="results"></div>
     </div>
