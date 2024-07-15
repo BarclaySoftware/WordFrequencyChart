@@ -7,7 +7,7 @@ function generateWordFrequency() {
     resultsDiv.innerHTML = '';
 
     if (!text) {
-        alert('No valid text was found.');
+        alert('Please enter valid text.');
         return;
     }
 
@@ -31,17 +31,15 @@ function generateWordFrequency() {
 
     chart = new Chart(ctx, {
         type: 'bar',
-        // type: 'line',
         data: {
             labels: labels,
             datasets: [{
                 label: 'Word Frequency',
                 data: data,
-                backgroundColor: '#1976d2',
-                borderColor: '#9e9e9e',
+                backgroundColor: 'rgba(25, 118, 210, 1)',
+                borderColor: 'rgba(158, 158, 158, 1)',
                 borderWidth: 1,
-                hoverBackgroundColor: '#004b9b',
-                hoverBorderColor: '#9e9e9e',
+                hoverBackgroundColor: 'teal' // Set hover background color to teal
             }]
         },
         options: {
@@ -52,13 +50,12 @@ function generateWordFrequency() {
                             family: 'interface',
                             size: 14
                         },
-                        color: '#616161'
+                        color: 'red' // Set x-axis text color to red
                     },
                     grid: {
-                        color: '#ffffff'
+                        color: 'yellow' // Set x-axis grid lines to yellow
                     }
                 },
-                
                 y: {
                     beginAtZero: true,
                     ticks: {
@@ -66,10 +63,10 @@ function generateWordFrequency() {
                             family: 'interface',
                             size: 14
                         },
-                        color: '#616161'
+                        color: 'red' // Set y-axis text color to red
                     },
                     grid: {
-                        color: '#f4f4f4'
+                        color: 'yellow' // Set y-axis grid lines to yellow
                     }
                 }
             },
@@ -80,38 +77,39 @@ function generateWordFrequency() {
                             family: 'interface',
                             size: 14
                         },
-                        color: '#1976d2'
+                        color: 'red' // Set legend text color to red
                     }
                 },
                 tooltip: {
-                    backgroundColor: '#ffffff',
-                    titleColor: '#4d4d4d',
-                    bodyColor: '#4d4d4d',
-                    borderColor: '#d9d9d9',
-                    borderWidth: 1,
-                    boxPadding: 2,
-                    // shadowOffsetX: 3,
-                    // shadowOffsetY: 3,
-                    // shadowBlur: 10,
-                    // shadowColor: 'rgba(0, 0, 0, 0.5)',
-                    callbacks: {
-                        labelColor: function(context) {
-                            return {
-                                borderColor: '#d9d9d9',
-                                backgroundColor: context.dataset.backgroundColor,
-                                borderWidth: 1,
-                                borderDashOffset: 0
-                            };
-                        }
-                    },
+                    backgroundColor: 'white', // Set tooltip background to white
+                    titleColor: 'red', // Set tooltip title text color to red
+                    bodyColor: 'red', // Set tooltip body text color to red
+                    borderColor: 'pink', // Set border around color box to pink
+                    borderWidth: 1, // Ensure border is visible
+                    boxPadding: 2, // Padding around color box
+                    shadowOffsetX: 3, // Horizontal shadow offset
+                    shadowOffsetY: 3, // Vertical shadow offset
+                    shadowBlur: 10, // Shadow blur
+                    shadowColor: 'rgba(0, 0, 0, 0.5)', // Shadow color
                     titleFont: {
-                        family: 'interface-bold',
+                        family: 'interface',
                         size: 14,
                         weight: 'normal'
                     },
                     bodyFont: {
                         family: 'interface',
                         size: 14
+                    },
+                    callbacks: {
+                        labelColor: function(context) {
+                            return {
+                                borderColor: 'pink',
+                                backgroundColor: context.dataset.backgroundColor,
+                                borderWidth: 2,
+                                borderDash: [2, 2],
+                                borderDashOffset: 0
+                            };
+                        }
                     }
                 }
             },
