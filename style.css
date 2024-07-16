@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'interface';
-    src: url(https://delivercdn.pages.dev/evermore/NormalSans/NormalSans.ttf);
+    src: url(https://delivercdn.pages.dev/evermore/ChannelGrotesk/ChannelGrotesk.ttf);
 }
 
 @font-face {
     font-family: 'interface-bold';
-    src: url(https://delivercdn.pages.dev/evermore/evermore/EvermoreSans-Semibold.ttf);
+    src: url(https://delivercdn.pages.dev/evermore/ChannelGrotesk/ChannelGrotesk-Bold.ttf);
 }
 
 @font-face {
